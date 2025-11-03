@@ -1,0 +1,67 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    animation: fadeIn 1s ease-in;
+}
+h1 {
+    color: #2d3436;
+    margin-top: 20px;
+}
+form {
+    margin: 20px;
+}
+input, select, button {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #636e72;
+    font-size: 15px;
+    margin: 5px;
+}
+button {
+    background: #0984e3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #74b9ff;
+    transform: scale(1.05);
+}
+.refresh-btn {
+    background: #00b894;
+}
+.refresh-btn:hover {
+    background: #55efc4;
+}
+.graph-container img {
+    border-radius: 10px;
+    margin: 15px;
+    width: 600px;
+    border: 3px solid #2d3436;
+    transition: transform 0.4s ease;
+}
+.graph-container img:hover {
+    transform: scale(1.04);
+}
+.result-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    width: 50%;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 16px;
+    animation: slideIn 0.7s ease;
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@keyframes slideIn {
+    from {transform: translateY(20px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}

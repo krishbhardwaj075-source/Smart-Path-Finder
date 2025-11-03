@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Path Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>🎯 Smart Path Finder</h1>
+    <form method="POST">
+        <label>Start:</label>
+        <input type="text" name="start" maxlength="1" placeholder="A" >
+        <label>Goal:</label>
+        <input type="text" name="goal" maxlength="1" placeholder="F" >
+        <label>Algorithm:</label>
+        <select name="algorithm">
+            <option value="dijkstra">Dijkstra</option>
+            <option value="astar">A*</option>
+            <option value="aostar">AO*</option>
+        </select>
+        <button type="submit">Find Path</button>
+        <button type="submit" name="refresh" class="refresh-btn">🔄 Change Graph</button>
+    </form>
+    <div class="graph-container">
+        <img src="data:image/png;base64,{{ graph_img }}" alt="Graph">
+    </div>
+    {% if result %}
+    <div class="result-box">
+        {% if result.error %}
+            <p>{{ result.error }}</p>
+        {% else %}
+            <b>Algorithm:</b> {{ result.algorithm }}<br>
+            <b>Path:</b> {{ result.path }}<br>
+            <b>Total Cost:</b> {{ result.cost }}<br>
+            <b>Time Taken:</b> {{ result.time }}<br>
+            <b>Memory Used:</b> {{ result.memory }}
+        {% endif %}
+    </div>
+    {% endif %}
+    {% if path_img %}
+    <div class="graph-container">
+        <img src="data:image/png;base64,{{ path_img }}" alt="Path Graph">
+    </div>
+    {% endif %}
+</body>
+</html>
