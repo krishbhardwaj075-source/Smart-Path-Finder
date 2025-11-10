@@ -5,19 +5,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io, base64, time, tracemalloc, random, heapq, math
 app = Flask(__name__)
-# ---------- GLOBAL GRAPH ----------
 G = None
-# ---------- RANDOM GRAPH CREATION ----------
 def create_random_graph():
     G = nx.DiGraph()
-    nodes = ['A', 'B', 'C', 'D', 'E', 'F','G','H','I']
+    nodes = ['A', 'B', 'C', 'D', 'E', 'F','G','H']
     G.add_nodes_from(nodes)
     for i in range(len(nodes)):
         for j in range(i + 1, len(nodes)):
             if random.random() < 0.5:
                 weight = random.randint(1, 15)
                 G.add_edge(nodes[i], nodes[j], weight=weight)
-                # Add backward edge sometimes
                 if random.random() < 0.4:
                     G.add_edge(nodes[j], nodes[i], weight=random.randint(1, 15))
     return G
