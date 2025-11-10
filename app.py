@@ -155,6 +155,7 @@ def index():
                 result = {"error": "⚠️ No valid path found!"}
         else:
             result = {"error": "⚠️ Invalid nodes (A–H only)."}  # corrected range
+        print("Templates directory:", os.listdir(os.path.join(os.getcwd(), 'templates')))
 
     return render_template("index.html", graph_img=graph_img, path_img=path_img, result=result)
 
