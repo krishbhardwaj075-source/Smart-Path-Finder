@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 import io, base64, time, tracemalloc, random, heapq, math, os
 
 # --- Flask App Setup ---
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 G = None
+
 
 # ---------- RANDOM GRAPH ----------
 def create_random_graph():
