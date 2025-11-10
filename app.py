@@ -3,12 +3,16 @@ import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import io, base64, time, tracemalloc, random, heapq, math
+import io, base64, time, tracemalloc, random, heapq, math, os
+
+# --- Flask App Setup ---
 app = Flask(__name__)
 G = None
+
+# ---------- RANDOM GRAPH ----------
 def create_random_graph():
     G = nx.DiGraph()
-    nodes = ['A', 'B', 'C', 'D', 'E', 'F','G','H']
+    nodes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     G.add_nodes_from(nodes)
     for i in range(len(nodes)):
         for j in range(i + 1, len(nodes)):
@@ -18,6 +22,7 @@ def create_random_graph():
                 if random.random() < 0.4:
                     G.add_edge(nodes[j], nodes[i], weight=random.randint(1, 15))
     return G
+
 # ---------- DIJKSTRA ----------
 def dijkstra(G, start, goal):
     distances = {node: float('inf') for node in G.nodes}
@@ -39,6 +44,7 @@ def dijkstra(G, start, goal):
         path.insert(0, node)
         node = previous[node]
     return path, distances[goal]
+
 # ---------- A* ----------
 def a_star(G, start, goal):
     pos = nx.spring_layout(G, seed=42)
@@ -67,6 +73,7 @@ def a_star(G, start, goal):
         path.insert(0, node)
         node = previous[node]
     return path, g[goal]
+
 # ---------- AO* ----------
 def ao_star(G, start, goal):
     heuristic = {node: random.randint(1, 10) for node in G.nodes}
@@ -82,6 +89,7 @@ def ao_star(G, start, goal):
         path.append(next_node)
         current = next_node
     return path, total_cost
+
 # ---------- GRAPH PLOTTING ----------
 def plot_graph(G, path=None):
     pos = nx.spring_layout(G, seed=42)
@@ -100,21 +108,26 @@ def plot_graph(G, path=None):
     plt.close()
     buf.seek(0)
     return base64.b64encode(buf.getvalue()).decode('utf-8')
+
 # ---------- ROUTES ----------
 @app.route("/", methods=["GET", "POST"])
 def index():
     global G
     if G is None:
         G = create_random_graph()
+
     result, path_img = None, None
     graph_img = plot_graph(G)
+
     if request.method == "POST":
-        if "refresh" in request.form:  # user clicked refresh
+        if "refresh" in request.form:
             G = create_random_graph()
             return redirect(url_for("index"))
+
         start = request.form["start"].upper()
         goal = request.form["goal"].upper()
         algo = request.form["algorithm"]
+
         if start in G.nodes and goal in G.nodes:
             tracemalloc.start()
             t1 = time.perf_counter()
@@ -141,10 +154,12 @@ def index():
             else:
                 result = {"error": "⚠️ No valid path found!"}
         else:
-            result = {"error": "⚠️ Invalid nodes (A–F only)."}
-    return render_template("index.html", graph_img=graph_img, path_img=path_img, result=result)
-import os
+            result = {"error": "⚠️ Invalid nodes (A–H only)."}  # corrected range
 
+    return render_template("index.html", graph_img=graph_img, path_img=path_img, result=result)
+
+
+# ---------- MAIN ENTRY ----------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render gives a random port
+    port = int(os.environ.get("PORT", 5000))  # Render assigns dynamic port
     app.run(host="0.0.0.0", port=port, debug=False)
