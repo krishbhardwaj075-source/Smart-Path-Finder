@@ -10,7 +10,7 @@ G = None
 # ---------- RANDOM GRAPH CREATION ----------
 def create_random_graph():
     G = nx.DiGraph()
-    nodes = ['A', 'B', 'C', 'D', 'E', 'F','G','H']
+    nodes = ['A', 'B', 'C', 'D', 'E', 'F','G','H','I']
     G.add_nodes_from(nodes)
     for i in range(len(nodes)):
         for j in range(i + 1, len(nodes)):
