@@ -159,8 +159,6 @@ def index():
         print("Templates directory:", os.listdir(os.path.join(os.getcwd(), 'templates')))
 
     return render_template("index.html", graph_img=graph_img, path_img=path_img, result=result)
-
-
 # ---------- MAIN ENTRY ----------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Render assigns dynamic port
