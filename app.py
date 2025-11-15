@@ -77,19 +77,24 @@ def a_star(G, start, goal):
 
 # ---------- AO* ----------
 def ao_star(G, start, goal):
+    
     heuristic = {node: random.randint(1, 10) for node in G.nodes}
-    path = [start]
-    current = start
-    total_cost = 0
-    while current != goal:
-        neighbors = list(G.neighbors(current))
-        if not neighbors:
-            break
-        next_node = min(neighbors, key=lambda n: G[current][n]['weight'] + heuristic[n])
-        total_cost += G[current][next_node]['weight']
-        path.append(next_node)
-        current = next_node
-    return path, total_cost
+    pq = []
+    heapq.heappush(pq, (heuristic[start], 0, start, [start]))
+    best_cost = {start: 0}
+    while pq:
+        est, cost, node, path = heapq.heappop(pq) 
+        if node == goal:
+            return path, cost
+        for neigh in G[node]:
+            weight = G[node][neigh]['weight']
+            new_cost = cost + weight
+            if neigh not in best_cost or new_cost < best_cost[neigh]:
+                best_cost[neigh] = new_cost
+                est_total = new_cost + heuristic[neigh]
+                heapq.heappush(pq, (est_total, new_cost, neigh, path + [neigh]))
+    return [start], float('inf')
+
 
 # ---------- GRAPH PLOTTING ----------
 def plot_graph(G, path=None):
